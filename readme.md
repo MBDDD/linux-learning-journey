@@ -56,8 +56,8 @@ sudo apt update && sudo apt install htop curl git -y
 
 ### Первичная настройка
 ```bash
-git config --global user.name "mbddd"
-git config --global user.email "sl_mc1@mail.ru"
+git config --global user.name "username"
+git config --global user.email "user@email.com"
 ```
 
 ### Основные команды
