@@ -1,50 +1,160 @@
-### 🗺️ Итоговый Roadmap: Linux Admin (21 сентября – 27 ноября 2026)
+# Roadmap: Linux Admin<br>21 сентября – 27 ноября 2026
 
-*Режим: 2 часа в будни (45 мин теория + 1 час 15 мин практика).*
+*Режим: 2 часа в будни (45 мин теория + 1 час 15 мин практика)*
 
-#### 📅 ЭТАП 1: Фундамент Linux и Сети (Октябрь)
-
-**Неделя 1 (21–25 сентября): Развертывание среды, CLI и Git**
-*   **Задача:** Перестать бояться черного экрана и начать вести портфолио.
-*   **Практика:**
-    *   Установить VirtualBox (или WSL2), накатить Ubuntu Server 24.04 LTS. Настроить сеть «Сетевой мост» (Bridged). Подключиться к ней с основного ПК через PowerShell/SSH.
-    *   **Git:** Установить Git, настроить `user.name` и `user.email`. Создать репозиторий `linux-learning-journey` на GitHub. Выучить `git init`, `git add`, `git commit`, `git push`, `git pull`.
-*   **Темы:** Навигация (`cd`, `ls`, `pwd`, `mkdir`), менеджер пакетов (`apt update && apt install htop curl`), основы Git.
-*   🎯 **Для резюме/GitHub:** Залить в репозиторий файл `week1_notes.md` со шпаргалкой по командам. Сделать первый коммит.
+### День 1: 21 сентября (Понедельник) — Развертывание среды и Git
+*   Теория
+    *   Что такое виртуализация и чем отличается сеть «Сетевой мост» (Bridged) от NAT;
+    *   Основы Git: что такое репозиторий, коммит, ветка, remote;
+    *   Почему для Git лучше использовать SSH-ключи, а не пароли.
+*   Практика
+    1. Установить VirtualBox и создать ВМ с Ubuntu Server 22.04;
+    2. В настройках ВМ установить тип подключения сети: **Сетевой мост (Bridged Adapter)**;
+    3. Узнать IP сервера командой `ip a` или `hostname -I` и подключиться к нему через MobaXterm (SSH);
+    4. Установить и настроить Git;
+    5. Сгенерировать и добавить SSH-ключ на GitHub;
+    6. Инициализировать репозиторий и сделать первый push.
+*   Цели
+    * Сервер доступен по SSH;
+    * Git настроен через SSH-ключ;
+    * Первый коммит на GitHub.
+*   Ссылки
+    *   VirtualBox: [Скачать](https://download.virtualbox.org/virtualbox/7.2.18/VirtualBox-7.2.18-175117-Win.exe)
+    *   Ubuntu Server 22.04: [Скачать ISO](https://releases.ubuntu.com/jammy/ubuntu-22.04.5-live-server-amd64.iso)
+    *   MobaXterm: [Скачать Home Edition](https://mobaxterm.mobatek.net/download-home-edition.html)
 
 ---
-### 21.09.2026
-1. [Установить VirtualBox](https://download.virtualbox.org/virtualbox/7.2.18/VirtualBox-7.2.18-175117-Win.exe);
-2. [Скачать и установить Ubuntu Server 24.04 LTS на виртуальную машину](https://releases.ubuntu.com/jammy/ubuntu-22.04.5-live-server-amd64.iso);
-3. Настроить сеть в режиме «Сетевой мост» (Bridged), чтобы сервер был доступен с основного ПК;
-4. Подключиться к серверу с основного ПК через PowerShell/SSH (с помощью [MobaXterm](https://mobaxterm.mobatek.net/download-home-edition.html));
 
-    Установить Git (если ещё не установлен) и настроить:
-    bash
+### День 2: 22 сентября (Вторник) — Файловая система и пакеты
+*   Теория
+    *   Стандартная иерархия файловой системы Linux: `/`, `/etc`, `/var`, `/home`, `/tmp`, `/bin`;
+    *   Абсолютные (`/etc/nginx`) и относительные (`../nginx`) пути;
+    *   Как работает `apt`: разница между `update` (обновление списка) и `upgrade` (обновление пакетов).
+*   Практика
+    1. Создать вложенную структуру папок одной командой:
+       ```bash
+       mkdir -p ~/projects/web/{html,logs,scripts}
+       ```
+    2. Установить утилиты для мониторинга и навигации:
+       ```bash
+       sudo apt install htop curl tree -y
+       ```
+    3. Визуализировать созданную структуру:
+       ```bash
+       tree ~/projects
+       ```
+    4. Потренировать перемещение и копирование:
+       ```bash
+       cp ~/projects/web/logs ~/projects/web/logs_backup
+       mv ~/projects/web/logs_backup ~/projects/web/archive_logs
+       rm -rf ~/projects/web/archive_logs
+       ```
+    5. Запустить `htop`, изучить загрузку CPU/RAM, выйти через клавишу `F10` или `q`.
+*   Цели
+    *   Понимание структуры файловой системы Linux;
+    *   Умение устанавливать пакеты через `apt`;
+    *   Практика работы с файлами и директориями.
+*   Ссылки
+    *   Документация Ubuntu по структуре ФС: [Filesystem Hierarchy Standard](https://help.ubuntu.com/community/LinuxFilesystemTreeOverview)
 
-    git config --global user.name "Твоё Имя"
-    git config --global user.email "твой@email"
+---
 
-    Создать репозиторий linux-learning-journey на GitHub.
+### День 3: 23 сентября (Среда) — Потоки, перенаправление и редакторы
+*   Теория
+    *   Стандартные потоки: `stdin` (0), `stdout` (1), `stderr` (2);
+    *   Операторы перенаправления: `>` (перезаписать), `>>` (дописать), `|` (передать вывод одной команды на вход другой);
+    *   Базовые команды редактора `nano` (в отличие от сложного `vim`).
+*   Практика
+    1. Создать и отредактировать файл в `nano`:
+       ```bash
+       nano ~/projects/web/scripts/info.txt
+       ```
+       Написать 3 строки текста. Сохранить: `Ctrl+O` -> `Enter` -> `Ctrl+X`.
+    2. Перенаправить вывод команды в файл (перезапись):
+       ```bash
+       ls -la ~/projects > ~/projects/web/logs/list.txt
+       ```
+    3. Дописать строку в конец файла без перезаписи:
+       ```bash
+       echo "Проверка добавления новой строки" >> ~/projects/web/logs/list.txt
+       ```
+    4. Скачать реальный тестовый лог-файл для будущих тренировок:
+       ```bash
+       curl -o ~/projects/web/logs/nginx.log https://raw.githubusercontent.com/elastic/examples/master/Common%20Data%20Formats/nginx_logs/nginx_logs
+       ```
+*   Цели
+    *   Понимание стандартных потоков ввода-вывода;
+    *   Умение перенаправлять вывод команд в файлы;
+    *   Базовая работа в текстовом редакторе `nano`.
+*   Ссылки
+    *   Документация GNU по перенаправлению: [Redirections](https://www.gnu.org/software/bash/manual/html_node/Redirections.html)
+    *   Шпаргалка по nano: [Nano Editor Cheat Sheet](https://www.nano-editor.org/dist/latest/cheatsheet.html)
 
-    Выучить и применить базовые команды Git: git init, git add, git commit, git push, git pull.
+---
 
-ssh-keygen -t ed25519 -C "sl_mc1@mail.ru"
-cat ~/.ssh/id_ed25519.pub
+### День 4: 24 сентября (Четверг) — Поиск и фильтрация данных
+*   Теория
+    *   Как работает `grep` (поиск по содержимому), `find` (поиск по имени/атрибутам файлов), `wc` (подсчет строк/слов);
+    *   Флаги `grep`: `-i` (игнорировать регистр), `-v` (инвертировать поиск), `-c` (подсчет совпадений).
+*   Практика
+    1. Найти все строки с ошибкой 404 и вывести на экран:
+       ```bash
+       grep " 404 " ~/projects/web/logs/nginx.log
+       ```
+    2. Сохранить только эти ошибки в новый файл:
+       ```bash
+       grep " 404 " ~/projects/web/logs/nginx.log > ~/projects/web/logs/errors_404.txt
+       ```
+    3. Посчитать количество строк в этом новом файле:
+       ```bash
+       wc -l ~/projects/web/logs/errors_404.txt
+       ```
+    4. Найти все `.txt` файлы в папке `projects` и вложенных папках:
+       ```bash
+       find ~/projects -name "*.txt"
+       ```
+    5. Объединить команды через pipe (найти ошибки и сразу посчитать их, без создания промежуточного файла):
+       ```bash
+       grep " 404 " ~/projects/web/logs/nginx.log | wc -l
+       ```
+*   Цели
+    *   Умение искать информацию в логах с помощью `grep`;
+    *   Понимание работы конвейеров (pipes);
+    *   Практика анализа системных логов.
+*   Ссылки
+    *   Документация GNU grep: [GNU Grep Manual](https://www.gnu.org/software/grep/manual/grep.html)
+    *   Документация GNU find: [GNU Find Manual](https://www.gnu.org/software/findutils/manual/html_node/find_html/)
 
-📚 Теория (45 минут)
+---
 
-    Навигация по файловой системе: cd, ls, pwd, mkdir.
+### День 5: 25 сентября (Пятница) — Процессы, сервисы и закрытие недели
+*   Теория
+    *   Жизненный цикл процесса в Linux;
+    *   Разница между `ps` (мгновенный снимок) и `top`/`htop` (динамический просмотр);
+    *   Основы `systemd`: что такое юнит, как посмотреть статус службы.
+*   Практика
+    1. Посмотреть все запущенные процессы и отфильтровать ssh:
+       ```bash
+       ps aux | grep ssh
+       ```
+    2. Проверить статус SSH-сервиса через systemd:
+       ```bash
+       sudo systemctl status ssh
+       ```
+    3. Посмотреть историю своих коммитов в красивом виде:
+       ```bash
+       git log --oneline --graph
+       ```
+    4. Открыть `week1_notes.md` через `nano`, исправить версию Ubuntu на актуальную, проверить орфографию, добавить раздел "Итоги недели".
+    5. Зайти на GitHub через браузер, проверить, что репозиторий выглядит аккуратно и профессионально.
+*   Цели
+    *   Понимание управления процессами в Linux;
+    *   Умение работать с `systemd` для управления сервисами;
+    *   Оформленный README и чистая история коммитов.
+*   Ссылки
+    *   Документация systemd: [systemd for Administrators](https://www.freedesktop.org/software/systemd/man/systemd.html)
+    *   Conventional Commits: [Conventional Commits Specification](https://www.conventionalcommits.org/en/v1.0.0/)
 
-    Менеджер пакетов: apt update && apt install htop curl.
-
-    Основы Git (что такое коммит, ветка, удалённый репозиторий).
-
-🎯 Цель на сегодня
-
-    Создать файл week1_notes.md со шпаргалкой по командам.
-
-    Сделать первый коммит в свой репозиторий на GitHub.
 ---
 
 **Неделя 2 (28 сентября – 2 октября): Пользователи, права доступа и SSH**
